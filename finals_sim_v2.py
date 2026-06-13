@@ -18,7 +18,7 @@ THE MODEL:
    (like FiveThirtyEight's NBA model) use
 4. Add a home-court adjustment (NBA home teams average ~+3 net rating boost
    historically)
-
+"""
 import random
 import math
 
