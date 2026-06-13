@@ -19,15 +19,12 @@ THE MODEL:
 4. Add a home-court adjustment (NBA home teams average ~+3 net rating boost
    historically)
 
-This turns "I guessed a number" into "I computed a number from box scores."
-"""
-
 import random
 import math
 
-# ---------------------------------------------------------
+
 # STEP 1: Real net ratings from ALL 4 games of this series so far
-# ---------------------------------------------------------
+
 # Format: (NYK_off_rating, NYK_def_rating), in chronological order
 game_data = [
     (104.04, 95.96),    # Game 1 (NYK won 105-95 @ SAS)
@@ -59,9 +56,7 @@ print(f"Recency-weighted average (decay={DECAY}): {NYK_AVG_NET_RATING:+.2f}")
 print(f"  -> weights used (oldest to newest): {[round(w,3) for w in weights]}\n")
 
 
-# ---------------------------------------------------------
 # STEP 2: Convert net rating differential -> win probability
-# ---------------------------------------------------------
 # Logistic function: as the rating gap grows, win probability approaches
 # 0 or 1, but never quite gets there (anything can happen on a given night).
 #
@@ -87,9 +82,7 @@ def game_win_prob(home_team):
     return prob_nyk
 
 
-# ---------------------------------------------------------
-# STEP 3: Simulate one possible "rest of series"
-# ---------------------------------------------------------
+# STEP 3: Simulate one possible "rest of series
 def simulate_series():
     nyk_wins, sas_wins = 3, 1
     schedule = [("Game 5", "SAS"), ("Game 6", "NYK"), ("Game 7", "SAS")]
@@ -112,9 +105,8 @@ def simulate_series():
     return winner, nyk_wins + sas_wins, knicks_won_game5
 
 
-# ---------------------------------------------------------
+
 # STEP 4: Run the simulation many times and tally
-# ---------------------------------------------------------
 def run_simulation(num_trials=50000):
     results = {
         "NYK_in_5": 0, "NYK_in_6": 0, "NYK_in_7": 0,
@@ -159,9 +151,9 @@ if __name__ == "__main__":
     print("Our data-driven model says NYK has roughly "
           f"{100*game_win_prob('SAS'):.1f}% in San Antonio tonight.")
 
-    # -------------------------------------------------------
+
     # EXTRA 1: Decay sensitivity sweep
-    # -------------------------------------------------------
+
     # How sensitive is our prediction to the DECAY parameter?
     # A robust model shouldn't swing wildly for small parameter changes.
     print("\n" + "=" * 55)
@@ -175,9 +167,9 @@ if __name__ == "__main__":
         note = "  <- equal weighting" if test_decay == 1.0 else ""
         print(f"  DECAY={test_decay:.1f}: NYK net rating={avg:+.2f}, Game 5 win prob={100*p:.1f}%{note}")
 
-    # -------------------------------------------------------
+
     # EXTRA 2: Bootstrap confidence interval
-    # -------------------------------------------------------
+    
     # We only have 4 games of data - that's a TINY sample. The "average net
     # rating" we computed could easily be off by a lot just due to random
     # game-to-game variance. Bootstrapping = resample our 4 games (with
@@ -197,9 +189,9 @@ if __name__ == "__main__":
     print("  This is WHY single-model predictions should come with a grain of salt -")
     print("  small sample sizes mean a lot of uncertainty, even with real data.")
 
-    # -------------------------------------------------------
-    # EXTRA 3: "What if" scenario - star player impact
-    # -------------------------------------------------------
+
+    # EXTRA 3: "What if" scenario - star player impact(Daddy Brunson)
+
     # Estimate a player's impact on team net rating using their plus/minus
     # or efficiency, then see how the title probability shifts if they're
     # limited (e.g. foul trouble, minor injury).
